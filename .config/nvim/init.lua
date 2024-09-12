@@ -590,7 +590,7 @@ require('lazy').setup({
         -- disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. you can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true }
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -607,7 +607,7 @@ require('lazy').setup({
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
-        cpp = { 'clang_format' },
+        cpp = { 'clang_format', stop_after_first = true },
       },
     },
   },
@@ -729,7 +729,6 @@ require('lazy').setup({
     --
     -- if you want to see what colorschemes are already installed, you can use `:telescope colorscheme`.
     'catppuccin/nvim',
-    commit = '6827a6763888f73df686f32c0e5ffb5b6b754d7b',
     name = 'catppuccin',
     priority = 1000, -- make sure to load this before all the other start plugins.
     opts = {

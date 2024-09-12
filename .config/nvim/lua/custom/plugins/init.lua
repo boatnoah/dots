@@ -20,46 +20,15 @@ return {
     },
   },
 
-  -- A beatiful splash loading screen
-  {
-    'goolord/alpha-nvim',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      local alpha = require 'alpha'
-      local dashboard = require 'alpha.themes.dashboard'
-
-      -- Center the header (cat ASCII art)
-      local header = {
-        '                       ',
-        '                       ',
-        '                       ',
-        '                       ',
-        '          ⟋|､          ',
-        '         (°､ ｡ 7       ',
-        '         |､  ~ヽ       ',
-        '         じしf_,)〳    ',
-      }
-
-      dashboard.section.header.val = header
-      dashboard.section.header.opts.hl = 'AlphaHeader'
-
-      -- Simplified button configuration
-      dashboard.section.buttons.val = {
-        dashboard.button('f f', '  Find Files', ':Telescope find_files<CR>'),
-        dashboard.button('f w', '  Find Word', ':Telescope live_grep<CR>'),
-      }
-
-      alpha.setup(dashboard.config)
-    end,
-  },
   {
     'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('oil').setup {
+        default_file_explorer = true,
         view_options = {
           show_hidden = true,
         },
@@ -116,15 +85,6 @@ return {
       end)
     end,
   },
-
-  {
-    'MeanderingProgrammer/markdown.nvim',
-    main = 'render-markdown',
-    opts = {},
-    name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-  },
-
   {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
