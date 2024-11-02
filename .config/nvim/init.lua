@@ -67,8 +67,6 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- Set the status line close to the border
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -90,21 +88,14 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
-vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+-- Move through wrapped lines
+vim.keymap.set('n', '<Up>', 'gk', { desc = 'Move up through wrapped lines' })
+vim.keymap.set('n', '<Down>', 'gj', { desc = 'Move down through wrapped lines' })
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
---
+-- Quick indent
+vim.keymap.set('n', '<Left>', '<<', { noremap = true })
+vim.keymap.set('n', '<Right>', '>>', { noremap = true })
+
 -- Custom keymaps
 
 -- Groups and move text up and down in visual mode
@@ -501,8 +492,14 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
       local servers = {
-        clangd = {},
+        clangd = {
+          capabilities = {
+            documentFormattingProvider = false,
+            documentRangeFormattingProvider = false,
+          },
+        },
         -- gopls = {},
         rust_analyzer = {},
         -- ... etc. see `:help lspconfig-all` for a list of all the pre-configured lsps
@@ -512,11 +509,10 @@ require('lazy').setup({
         --
         -- but for many setups, the lsp (`tsserver`) will work just fine
         pyright = {},
-        emmet_ls = {},
-        html = {},
-        cssls = {},
         tailwindcss = {},
         jsonls = {},
+        html = {},
+        sqlls = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -550,9 +546,9 @@ require('lazy').setup({
         'prettier',
         'isort',
         'black',
-        'clangd',
         'clang-format',
         'pyright',
+        'sql-formatter',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -590,7 +586,7 @@ require('lazy').setup({
         -- disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. you can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true }
+        local disable_filetypes = { c = true, cpp = true, html = true }
         return {
           timeout_ms = 500,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -600,6 +596,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
+        sql = { 'sql_formatter', stop_after_first = true },
         -- you can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
@@ -607,7 +604,9 @@ require('lazy').setup({
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
-        cpp = { 'clang_format', stop_after_first = true },
+        css = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'prettierd', 'prettier', stop_after_first = true },
+        cpp = { 'clang-format' },
       },
     },
   },
@@ -718,6 +717,25 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+        },
+      }
+    end,
+  },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
+    config = function()
+      require('typescript-tools').setup {
+        on_attach = function(client, _)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+        settings = {
+          jsx_close_tag = {
+            enable = true,
+            filetypes = { 'javascriptreact', 'typescriptreact' },
+          },
         },
       }
     end,

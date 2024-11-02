@@ -1,17 +1,29 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# global npm packages
+export PATH=~/.npm-global/bin:$PATH
+export PNPM_HOME="$HOME/.pnpm-globals"
+export PATH="$PNPM_HOME:$PATH"
+
+
 # Set update frequency
 zstyle ':omz:update' frequency 13
 
+# Rofi scripts
+export PATH=$HOME/.config/rofi/scripts:$PATH
+
 # Plugins
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+
+
 
 # Keybindings
 bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
+bindkey -s '^f' '^u~/scripts/fzf_tmux.sh^M'
 
 # History
 HISTSIZE=5000
@@ -33,7 +45,13 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # Source Oh-My-Zsh
 source $ZSH/oh-my-zsh.sh
 
+# Bash like time format
+disable -r time       # disable shell reserved word
+alias time='time -p ' # -p for POSIX output
+
+
 # User configuration
+#
 alias nvconf='nvim ~/.config/nvim/init.lua'
 alias zshrc='nvim ~/.zshrc'
 alias c='clear'
@@ -74,3 +92,8 @@ nvm() {
 # unfunction compdef
 # zprof
 alias dot='/usr/bin/git --git-dir=/home/boat/.dots/ --work-tree=/home/boat'
+PATH="$HOME/.local/bin:$PATH"
+
+
+
+

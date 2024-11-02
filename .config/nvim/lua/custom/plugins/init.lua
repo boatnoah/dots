@@ -85,23 +85,19 @@ return {
       end)
     end,
   },
+
   {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
+    'linux-cultist/venv-selector.nvim',
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'mfussenegger/nvim-dap',
+      { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+    },
+    lazy = false,
+    branch = 'regexp',
     config = function()
-      require('typescript-tools').setup {
-        on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-        end,
-        settings = {
-          jsx_close_tag = {
-            enable = true,
-            filetypes = { 'javascriptreact', 'typescriptreact', 'typescript', 'javascript' },
-          },
-        },
-      }
+      require('venv-selector').setup()
+      vim.api.nvim_set_keymap('n', '<leader>v', ':VenvSelect<CR>', { noremap = true, silent = true }) -- Key mapping
     end,
   },
 }
