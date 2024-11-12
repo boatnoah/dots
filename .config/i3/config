@@ -15,20 +15,21 @@ set $mod Mod1
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:JetBrainsMono Nerd Font 18
+exec --no-startup-id autorandr --change
 
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
 
 # bindsym --release $mod+Shift+Escape exec systemctl suspend
+exec_always --no-startup-id xrdb -merge ~/.Xresources
 
 
 
-exec_always feh --bg-scale ~/backgrounds/backiee-298100-landscape.jpg
+exec_always feh --bg-scale ~/backgrounds/mountain.jpg
 # RULEs 
 for_window [class=".*"] border pixel 0
 
 
 exec_always --no-startup-id picom -b
-exec_always --no-startup-id ~/scripts/display.sh
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Start XDG autostart .desktop files using dex. See also
@@ -75,6 +76,7 @@ bindsym $mod+Shift+q kill
 
 # bindsym $mod+Tab exec rofi -show drun
 bindsym $mod+Tab exec --no-startup-id ~/.config/rofi/launchers/type-2/launcher.sh
+
 
 
 # A more modern dmenu replacement is rofi:

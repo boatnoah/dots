@@ -23,7 +23,7 @@ bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
-bindkey -s '^f' '^u~/scripts/fzf_tmux.sh^M'
+bindkey -s '^f' '^u~/scripts/fzf-tmux.sh^M'
 
 # History
 HISTSIZE=5000
@@ -56,6 +56,7 @@ alias nvconf='nvim ~/.config/nvim/init.lua'
 alias zshrc='nvim ~/.zshrc'
 alias c='clear'
 alias h='~'
+alias ff='fastfetch'
 
 # Oh My Posh initialization
 eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/zen.toml)"
