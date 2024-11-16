@@ -48,6 +48,9 @@ return {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    settings = {
+      save_on_toggle = true,
+    },
     config = function()
       local harpoon = require 'harpoon'
 
@@ -62,25 +65,24 @@ return {
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end)
 
-      -- Use leader key combinations for navigation
-      vim.keymap.set('n', '<leader>1', function()
+      vim.keymap.set('n', 'th', function()
         harpoon:list():select(1)
       end)
-      vim.keymap.set('n', '<leader>2', function()
+      vim.keymap.set('n', 'tj', function()
         harpoon:list():select(2)
       end)
-      vim.keymap.set('n', '<leader>3', function()
+      vim.keymap.set('n', 'tk', function()
         harpoon:list():select(3)
       end)
-      vim.keymap.set('n', '<leader>4', function()
+      vim.keymap.set('n', 'tl', function()
         harpoon:list():select(4)
       end)
 
       -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set('n', '<leader>p', function()
+      vim.keymap.set('n', '<C-p>', function()
         harpoon:list():prev()
       end)
-      vim.keymap.set('n', '<leader>n', function()
+      vim.keymap.set('n', '<C-n>', function()
         harpoon:list():next()
       end)
     end,

@@ -3,8 +3,8 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # global npm packages
 export PATH=~/.npm-global/bin:$PATH
-export PNPM_HOME="$HOME/.pnpm-globals"
-export PATH="$PNPM_HOME:$PATH"
+
+
 
 
 # Set update frequency
