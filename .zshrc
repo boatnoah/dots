@@ -4,6 +4,9 @@ export ZSH="$HOME/.oh-my-zsh"
 # global npm packages
 export PATH=~/.npm-global/bin:$PATH
 
+# export editor
+export EDITOR=nvim
+
 
 
 
@@ -74,27 +77,15 @@ nvm() {
 }
 
 
-
-# Debugging tools (commented out for daily use)
-# Uncomment these when you need to check performance
-
-# zmodload zsh/zprof
-# zmodload zsh/datetime
-# typeset -i COMPDEF_COUNT=0
-# compdef() {
-#   ((COMPDEF_COUNT++))
-#   builtin compdef "$@"
-# }
-# before=$EPOCHREALTIME
-# source $ZSH/oh-my-zsh.sh
-# after=$EPOCHREALTIME
-# echo Oh-My-Zsh loaded in $(( $after - $before )) seconds
-# echo "compdef was called $COMPDEF_COUNT times"
-# unfunction compdef
-# zprof
 alias dot='/usr/bin/git --git-dir=/home/boat/.dots/ --work-tree=/home/boat'
 PATH="$HOME/.local/bin:$PATH"
 
 
-
-
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
