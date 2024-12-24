@@ -18,6 +18,9 @@ font pango:JetBrainsMono Nerd Font 18
 
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
 
+# Repeat delay to 200 miliseconds 
+exec_always --no-startup-id xset r rate 200 50
+
 # bindsym --release $mod+Shift+Escape exec systemctl suspend
 
 
@@ -216,7 +219,5 @@ gaps outer 1
 default_border none
 default_floating_border none
 
-# Prevent zoom being annoying
-for_window [title="^zoom$"] floating enable
 
 
