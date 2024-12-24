@@ -5,8 +5,8 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Same cursor in all modes
-vim.opt.guicursor = ''
 -- Set to true if you have a Nerd Font installed and selected in the terminal
+vim.opt.guicursor = ''
 vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
@@ -55,8 +55,6 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -145,7 +143,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -494,13 +492,8 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
       local servers = {
-        clangd = {
-          capabilities = {
-            documentFormattingProvider = false,
-            documentRangeFormattingProvider = false,
-          },
-        },
-        -- gopls = {},
+        clangd = {},
+        gopls = {},
         rust_analyzer = {},
         -- ... etc. see `:help lspconfig-all` for a list of all the pre-configured lsps
         --
@@ -544,6 +537,7 @@ require('lazy').setup({
         'stylua', -- used to format lua code
         'prettierd',
         'prettier',
+        'gofumpt',
         'isort',
         'black',
         'clang-format',
@@ -574,7 +568,7 @@ require('lazy').setup({
       {
         '<leader>w',
         function()
-          require('conform').format { async = true, lsp_fallback = true }
+          require('conform').format { async = true }
         end,
         mode = '',
         desc = 'format buffer',
@@ -607,6 +601,7 @@ require('lazy').setup({
         css = { 'prettierd', 'prettier', stop_after_first = true },
         html = { 'prettierd', 'prettier', stop_after_first = true },
         cpp = { 'clang-format' },
+        go = { 'gofumpt' },
       },
     },
   },
@@ -727,10 +722,6 @@ require('lazy').setup({
     opts = {},
     config = function()
       require('typescript-tools').setup {
-        on_attach = function(client, _)
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-        end,
         settings = {
           jsx_close_tag = {
             enable = true,
@@ -788,7 +779,7 @@ require('lazy').setup({
       --  - ci'  - [c]hange [i]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
-      -- add/delete/replace surroundings (brackets, quotes, etc.)
+      -- add/delete/replace ( surroundings ) (brackets, quotes, etc.)
       --
       -- - saiw) - [s]urround [a]dd [i]nner [w]ord [)]paren
       -- - sd'   - [s]urround [d]elete [']quotes
@@ -816,9 +807,9 @@ require('lazy').setup({
   },
   { -- highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    build = ':tsupdate',
+    build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'go' },
       -- autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -871,23 +862,7 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 }, {
   ui = {
-    -- if you are using a nerd font: set icons to an empty table which will use the
-    -- default lazy.nvim defined nerd font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
+    icons = vim.g.have_nerd_font,
   },
 })
 
